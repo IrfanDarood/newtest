@@ -18,13 +18,13 @@ async function main() {
       "hlf-network",
       "organizations",
       "peerOrganizations",
-      "seller.example.com",
-      "connection-seller.json"
+      "retailer.example.com",
+      "connection-retailer.json"
     );
     const ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
     // Create a new CA client for interacting with the CA.
-    const caURL = ccp.certificateAuthorities["ca.seller.example.com"].url;
+    const caURL = ccp.certificateAuthorities["ca.retailer.example.com"].url;
     const ca = new FabricCAServices(caURL);
 
     // Create a new file system based wallet for managing identities.
@@ -32,18 +32,18 @@ async function main() {
     const wallet = await Wallets.newFileSystemWallet(walletPath);
     console.log(`Wallet path: ${walletPath}`);
     // Check to see if we've already enrolled the user.
-    const userExists = await wallet.get("sellerUser");
+    const userExists = await wallet.get("retailerUser");
     if (userExists) {
       console.log(
-        'An identity for the user "sellerUser" already exists in the wallet'
+        'An identity for the user "retailerUser" already exists in the wallet'
       );
       return;
     }
 
     // Check to see if we've already enrolled the admin user.
-    const adminExists = await wallet.get("admin-seller");
+    const adminExists = await wallet.get("admin-retailer");
     if (!adminExists) {
-      const caInfo = ccp.certificateAuthorities["ca.seller.example.com"];
+      const caInfo = ccp.certificateAuthorities["ca.retailer.example.com"];
       console.log(caInfo);
       //const caTLSCACerts = caInfo.tlsCACerts.pem;
       const caTLSCACerts = caInfo.tlsCACerts.pem;
@@ -62,10 +62,10 @@ async function main() {
           certificate: enrollment.certificate,
           privateKey: enrollment.key.toBytes(),
         },
-        mspId: "sellerMSP",
+        mspId: "retailerMSP",
         type: "X.509",
       };
-      await wallet.put("admin-seller", x509Identity);
+      await wallet.put("admin-retailer", x509Identity);
       main();
       return;
     }
@@ -74,7 +74,7 @@ async function main() {
     // const gateway = new Gateway();
     // await gateway.connect(ccpPath, {
     //   wallet,
-    //   identity: "admin-seller",
+    //   identity: "admin-retailer",
     //   discovery: { enabled: true, asLocalhost: true },
     // });
 
@@ -82,16 +82,16 @@ async function main() {
     const provider = wallet.getProviderRegistry().getProvider(adminExists.type);
     const adminUser = await provider.getUserContext(
       adminExists,
-      "admin-seller"
+      "admin-retailer"
     );
 
     // Register the user, enroll the user, and import the new identity into the wallet.
     const secret = await ca.register(
-      { enrollmentID: "sellerUser", role: "client" },
+      { enrollmentID: "retailerUser", role: "client" },
       adminUser
     );
     const enrollment = await ca.enroll({
-      enrollmentID: "sellerUser",
+      enrollmentID: "retailerUser",
       enrollmentSecret: secret,
     });
     const x509Identity = {
@@ -99,15 +99,15 @@ async function main() {
         certificate: enrollment.certificate,
         privateKey: enrollment.key.toBytes(),
       },
-      mspId: "sellerMSP",
+      mspId: "retailerMSP",
       type: "X.509",
     };
-    await wallet.put("sellerUser", x509Identity);
+    await wallet.put("retailerUser", x509Identity);
     console.log(
-      'Successfully registered and enrolled admin user "sellerUser" and imported it into the wallet'
+      'Successfully registered and enrolled admin user "retailerUser" and imported it into the wallet'
     );
   } catch (error) {
-    console.error(`Failed to register user "sellerUser": ${error}`);
+    console.error(`Failed to register user "retailerUser": ${error}`);
     process.exit(1);
   }
 }

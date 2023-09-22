@@ -7,8 +7,8 @@ version: "2"
 
 volumes:
   orderer.example.com:
-  peer0.buyer.example.com:
-  peer0.seller.example.com:
+  peer0.manufacturer.example.com:
+  peer0.retailer.example.com:
 
 networks:
   test:
@@ -47,8 +47,8 @@ services:
     networks:
       - test
 
-  peer0.buyer.example.com:
-    container_name: peer0.buyer.example.com
+  peer0.manufacturer.example.com:
+    container_name: peer0.manufacturer.example.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       #Generic peer variables
@@ -65,19 +65,19 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.buyer.example.com
-      - CORE_PEER_ADDRESS=peer0.buyer.example.com:7051
+      - CORE_PEER_ID=peer0.manufacturer.example.com
+      - CORE_PEER_ADDRESS=peer0.manufacturer.example.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.buyer.example.com:7052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.manufacturer.example.com:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.buyer.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.buyer.example.com:7051
-      - CORE_PEER_LOCALMSPID=buyerMSP
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.manufacturer.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.manufacturer.example.com:7051
+      - CORE_PEER_LOCALMSPID=manufacturerMSP
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
-      - ../organizations/peerOrganizations/buyer.example.com/peers/peer0.buyer.example.com/msp:/etc/hyperledger/fabric/msp
-      - ../organizations/peerOrganizations/buyer.example.com/peers/peer0.buyer.example.com/tls:/etc/hyperledger/fabric/tls
-      - peer0.buyer.example.com:/var/hyperledger/production
+      - ../organizations/peerOrganizations/manufacturer.example.com/peers/peer0.manufacturer.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/manufacturer.example.com/peers/peer0.manufacturer.example.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.manufacturer.example.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -85,8 +85,8 @@ services:
     networks:
       - test
 
-  peer0.seller.example.com:
-    container_name: peer0.seller.example.com
+  peer0.retailer.example.com:
+    container_name: peer0.retailer.example.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       #Generic peer variables
@@ -103,19 +103,19 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.seller.example.com
-      - CORE_PEER_ADDRESS=peer0.seller.example.com:9051
+      - CORE_PEER_ID=peer0.retailer.example.com
+      - CORE_PEER_ADDRESS=peer0.retailer.example.com:9051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.seller.example.com:9052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.retailer.example.com:9052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.seller.example.com:9051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.seller.example.com:9051
-      - CORE_PEER_LOCALMSPID=sellerMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.retailer.example.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.retailer.example.com:9051
+      - CORE_PEER_LOCALMSPID=retailerMSP
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
-      - ../organizations/peerOrganizations/seller.example.com/peers/peer0.seller.example.com/msp:/etc/hyperledger/fabric/msp
-      - ../organizations/peerOrganizations/seller.example.com/peers/peer0.seller.example.com/tls:/etc/hyperledger/fabric/tls
-      - peer0.seller.example.com:/var/hyperledger/production
+      - ../organizations/peerOrganizations/retailer.example.com/peers/peer0.retailer.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/retailer.example.com/peers/peer0.retailer.example.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.retailer.example.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -140,7 +140,7 @@ services:
       - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
       - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
     depends_on:
-      - peer0.buyer.example.com
-      - peer0.seller.example.com
+      - peer0.manufacturer.example.com
+      - peer0.retailer.example.com
     networks:
       - test

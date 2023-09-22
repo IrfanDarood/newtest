@@ -84,15 +84,15 @@ createChannel
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
-infoln "Joining buyer peer to the channel..."
+infoln "Joining manufacturer peer to the channel..."
 joinChannel 1
-infoln "Joining seller peer to the channel..."
+infoln "Joining retailer peer to the channel..."
 joinChannel 2
 
 ## Set the anchor peers for each org in the channel
-infoln "Setting anchor peer for buyer..."
+infoln "Setting anchor peer for manufacturer..."
 setAnchorPeer 1
-infoln "Setting anchor peer for seller..."
+infoln "Setting anchor peer for retailer..."
 setAnchorPeer 2
 
 successln "Channel '$CHANNEL_NAME' joined"

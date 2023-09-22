@@ -285,30 +285,30 @@ chaincodeQuery() {
 ## package the chaincode
 packageChaincode
 
-## Install chaincode on peer0.buyer and peer0.seller
-infoln "Installing chaincode on peer0.buyer..."
+## Install chaincode on peer0.manufacturer and peer0.retailer
+infoln "Installing chaincode on peer0.manufacturer..."
 installChaincode 1
-infoln "Install chaincode on peer0.seller..."
+infoln "Install chaincode on peer0.retailer..."
 installChaincode 2
 
 ## query whether the chaincode is installed
 queryInstalled 1
 
-## approve the definition for buyer
+## approve the definition for manufacturer
 approveForMyOrg 1
 
 ## check whether the chaincode definition is ready to be committed
-## expect buyer to have approved and seller not to
-checkCommitReadiness 1 "\"buyerMSP\": true" "\"sellerMSP\": false"
-checkCommitReadiness 2 "\"buyerMSP\": true" "\"sellerMSP\": false"
+## expect manufacturer to have approved and retailer not to
+checkCommitReadiness 1 "\"manufacturerMSP\": true" "\"retailerMSP\": false"
+checkCommitReadiness 2 "\"manufacturerMSP\": true" "\"retailerMSP\": false"
 
-## now approve also for seller
+## now approve also for retailer
 approveForMyOrg 2
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 1 "\"buyerMSP\": true" "\"sellerMSP\": true"
-checkCommitReadiness 2 "\"buyerMSP\": true" "\"sellerMSP\": true"
+checkCommitReadiness 1 "\"manufacturerMSP\": true" "\"retailerMSP\": true"
+checkCommitReadiness 2 "\"manufacturerMSP\": true" "\"retailerMSP\": true"
 
 ## now that we know for sure both orgs have approved, commit the definition
 commitChaincodeDefinition 1 2

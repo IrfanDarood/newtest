@@ -24,9 +24,9 @@ cd ../tbfc-api
 
 npm i
 
-node registerBuyerUser.js
+node registerManufacturerUser.js
 
-node registerSellerUser.js
+node registerRetailerUser.js
 
 npm start
 

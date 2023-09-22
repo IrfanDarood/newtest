@@ -144,20 +144,20 @@ function createOrgs() {
     fi
     infoln "Generating certificates using cryptogen tool"
 
-    infoln "Creating buyer Identities"
+    infoln "Creating manufacturer Identities"
 
     set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-buyer.yaml --output="organizations"
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-manufacturer.yaml --output="organizations"
     res=$?
     { set +x; } 2>/dev/null
     if [ $res -ne 0 ]; then
       fatalln "Failed to generate certificates..."
     fi
 
-    infoln "Creating seller Identities"
+    infoln "Creating retailer Identities"
 
     set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-seller.yaml --output="organizations"
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-retailer.yaml --output="organizations"
     res=$?
     { set +x; } 2>/dev/null
     if [ $res -ne 0 ]; then
@@ -186,20 +186,20 @@ function createOrgs() {
 
   while :
     do
-      if [ ! -f "organizations/fabric-ca/buyer/tls-cert.pem" ]; then
+      if [ ! -f "organizations/fabric-ca/manufacturer/tls-cert.pem" ]; then
         sleep 1
       else
         break
       fi
     done
 
-    infoln "Creating buyer Identities"
+    infoln "Creating manufacturer Identities"
 
-    createbuyer
+    createmanufacturer
 
-    infoln "Creating seller Identities"
+    infoln "Creating retailer Identities"
 
-    createseller
+    createretailer
 
     infoln "Creating Orderer Org Identities"
 
@@ -207,7 +207,7 @@ function createOrgs() {
 
   fi
 
-  infoln "Generating CCP files for buyer and seller"
+  infoln "Generating CCP files for manufacturer and retailer"
   ./organizations/ccp-generate.sh
 }
 
@@ -286,7 +286,7 @@ function networkUp() {
   fi
 }
 
-# call the script to create the channel, join the peers of buyer and seller,
+# call the script to create the channel, join the peers of manufacturer and retailer,
 # and then update the anchor peers for each organization
 function createChannel() {
   # Bring up the network if it is not already up.
@@ -316,7 +316,7 @@ function deployCC() {
 
 # Tear down running network
 function networkDown() {
-  # stop org3 containers also in addition to buyer and seller, in case we were running sample to add org3
+  # stop org3 containers also in addition to manufacturer and retailer, in case we were running sample to add org3
   docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_CA down --volumes --remove-orphans
   #docker-compose -f $COMPOSE_FILE_COUCH_ORG3 -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
   # Don't remove the generated artifacts -- note, the ledgers are always removed
@@ -329,8 +329,8 @@ function networkDown() {
     # remove orderer block and other channel configuration transactions and certs
     docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf system-genesis-block/*.block organizations/peerOrganizations organizations/ordererOrganizations'
     ## remove fabric ca artifacts
-    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/buyer/msp organizations/fabric-ca/buyer/tls-cert.pem organizations/fabric-ca/buyer/ca-cert.pem organizations/fabric-ca/buyer/IssuerPublicKey organizations/fabric-ca/buyer/IssuerRevocationPublicKey organizations/fabric-ca/buyer/fabric-ca-server.db'
-    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/seller/msp organizations/fabric-ca/seller/tls-cert.pem organizations/fabric-ca/seller/ca-cert.pem organizations/fabric-ca/seller/IssuerPublicKey organizations/fabric-ca/seller/IssuerRevocationPublicKey organizations/fabric-ca/seller/fabric-ca-server.db'
+    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/manufacturer/msp organizations/fabric-ca/manufacturer/tls-cert.pem organizations/fabric-ca/manufacturer/ca-cert.pem organizations/fabric-ca/manufacturer/IssuerPublicKey organizations/fabric-ca/manufacturer/IssuerRevocationPublicKey organizations/fabric-ca/manufacturer/fabric-ca-server.db'
+    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/retailer/msp organizations/fabric-ca/retailer/tls-cert.pem organizations/fabric-ca/retailer/ca-cert.pem organizations/fabric-ca/retailer/IssuerPublicKey organizations/fabric-ca/retailer/IssuerRevocationPublicKey organizations/fabric-ca/retailer/fabric-ca-server.db'
     docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ordererOrg/msp organizations/fabric-ca/ordererOrg/tls-cert.pem organizations/fabric-ca/ordererOrg/ca-cert.pem organizations/fabric-ca/ordererOrg/IssuerPublicKey organizations/fabric-ca/ordererOrg/IssuerRevocationPublicKey organizations/fabric-ca/ordererOrg/fabric-ca-server.db'
     # docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf addOrg3/fabric-ca/org3/msp addOrg3/fabric-ca/org3/tls-cert.pem addOrg3/fabric-ca/org3/ca-cert.pem addOrg3/fabric-ca/org3/IssuerPublicKey addOrg3/fabric-ca/org3/IssuerRevocationPublicKey addOrg3/fabric-ca/org3/fabric-ca-server.db'
     # remove channel and script artifacts

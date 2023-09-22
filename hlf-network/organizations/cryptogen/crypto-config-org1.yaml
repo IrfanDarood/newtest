@@ -9,10 +9,10 @@
 # ---------------------------------------------------------------------------
 PeerOrgs:
   # ---------------------------------------------------------------------------
-  # buyer
+  # manufacturer
   # ---------------------------------------------------------------------------
-  - Name: buyer
-    Domain: buyer.example.com
+  - Name: manufacturer
+    Domain: manufacturer.example.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -30,7 +30,7 @@ PeerOrgs:
     #                 which obtains its values from the Spec.Hostname and
     #                 Org.Domain, respectively.
     # ---------------------------------------------------------------------------
-    #   - Hostname: foo # implicitly "foo.buyer.example.com"
+    #   - Hostname: foo # implicitly "foo.manufacturer.example.com"
     #     CommonName: foo27.org5.example.com # overrides Hostname-based FQDN set above
     #   - Hostname: bar
     #   - Hostname: baz

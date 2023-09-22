@@ -72,20 +72,20 @@ func initTfbcChaincode() *TfbcChaincode {
 
 // Define the letter of credit
 type LetterOfCredit struct {
-	LCId       string `json:"lcId"`
-	ExpiryDate string `json:"expiryDate"`
-	Buyer      string `json:"buyer"`
-	Bank       string `json:"bank"`
-	Seller     string `json:"seller"`
-	Amount     int    `json:"amount,int"`
-	Status     string `json:"status"`
+	LCId         string `json:"lcId"`
+	ExpiryDate   string `json:"expiryDate"`
+	Manufacturer string `json:"manufacturer"`
+	Bank         string `json:"bank"`
+	Retailer     string `json:"retailer"`
+	Amount       int    `json:"amount,int"`
+	Status       string `json:"status"`
 }
 
 func (s *TfbcChaincode) Init(APIstub contractapi.TransactionContextInterface) error {
 	return nil
 }
 
-// This function is initiate by Buyer
+// This function is initiate by Manufacturer
 func (s *TfbcChaincode) RequestLC(APIstub contractapi.TransactionContextInterface, args string) error {
 
 	LC := LetterOfCredit{}
@@ -101,7 +101,7 @@ func (s *TfbcChaincode) RequestLC(APIstub contractapi.TransactionContextInterfac
 	return nil
 }
 
-// This function is initiate by Seller
+// This function is initiate by Retailer
 func (s *TfbcChaincode) IssueLC(APIstub contractapi.TransactionContextInterface, args string) error {
 
 	lcID := struct {
@@ -126,7 +126,7 @@ func (s *TfbcChaincode) IssueLC(APIstub contractapi.TransactionContextInterface,
 		return fmt.Errorf("Issue with LC json unmarshaling")
 	}
 
-	LC := LetterOfCredit{LCId: lc.LCId, ExpiryDate: lc.ExpiryDate, Buyer: lc.Buyer, Bank: lc.Bank, Seller: lc.Seller, Amount: lc.Amount, Status: "Issued"}
+	LC := LetterOfCredit{LCId: lc.LCId, ExpiryDate: lc.ExpiryDate, Manufacturer: lc.Manufacturer, Bank: lc.Bank, Retailer: lc.Retailer, Amount: lc.Amount, Status: "Issued"}
 	LCBytes, err := json.Marshal(LC)
 
 	if err != nil {
@@ -159,7 +159,7 @@ func (s *TfbcChaincode) AcceptLC(APIstub contractapi.TransactionContextInterface
 		return fmt.Errorf("Issue with LC json unmarshaling")
 	}
 
-	LC := LetterOfCredit{LCId: lc.LCId, ExpiryDate: lc.ExpiryDate, Buyer: lc.Buyer, Bank: lc.Bank, Seller: lc.Seller, Amount: lc.Amount, Status: "Accepted"}
+	LC := LetterOfCredit{LCId: lc.LCId, ExpiryDate: lc.ExpiryDate, Manufacturer: lc.Manufacturer, Bank: lc.Bank, Retailer: lc.Retailer, Amount: lc.Amount, Status: "Accepted"}
 	LCBytes, err := json.Marshal(LC)
 
 	if err != nil {

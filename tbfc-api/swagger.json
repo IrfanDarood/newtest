@@ -168,17 +168,17 @@
           "type": "string",
           "description": "LC ID"
         },
-        "buyer": {
+        "manufacturer": {
           "type": "string",
-          "description": "Buyer ID"
+          "description": "Manufacturer ID"
         },
         "bank": {
           "type": "string",
           "description": "Bank ID"
         },
-        "seller": {
+        "retailer": {
           "type": "string",
-          "description": "Seller ID"
+          "description": "Retailer ID"
         },
         "expiryDate": {
           "type": "string",

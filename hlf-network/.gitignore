@@ -5,8 +5,8 @@
 /channel-artifacts/*.json
 /org3-artifacts/crypto-config/*
 organizations/fabric-ca/ordererOrg/*
-organizations/fabric-ca/buyer/*
-organizations/fabric-ca/seller/*
+organizations/fabric-ca/manufacturer/*
+organizations/fabric-ca/retailer/*
 organizations/ordererOrganizations/*
 organizations/peerOrganizations/*
 system-genesis-block/*

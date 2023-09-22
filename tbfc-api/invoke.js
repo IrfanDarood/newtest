@@ -18,8 +18,8 @@ async function invoke(fcn, args) {
       "hlf-network",
       "organizations",
       "peerOrganizations",
-      "buyer.example.com",
-      "connection-buyer.json"
+      "manufacturer.example.com",
+      "connection-manufacturer.json"
     );
     let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
@@ -29,10 +29,10 @@ async function invoke(fcn, args) {
     console.log(`Wallet path: ${walletPath}`);
 
     // Check to see if we've already enrolled the user.
-    const userExists = await wallet.get("BuyerUser");
+    const userExists = await wallet.get("ManufacturerUser");
     if (!userExists) {
       console.log(
-        'An identity for the user "BuyerUser" does not exist in the wallet'
+        'An identity for the user "ManufacturerUser" does not exist in the wallet'
       );
       console.log("Run the registerUser.js application before retrying");
       return;
@@ -42,7 +42,7 @@ async function invoke(fcn, args) {
     const gateway = new Gateway();
     await gateway.connect(ccp, {
       wallet,
-      identity: "BuyerUser",
+      identity: "ManufacturerUser",
       discovery: { enabled: true, asLocalhost: true },
     });
 

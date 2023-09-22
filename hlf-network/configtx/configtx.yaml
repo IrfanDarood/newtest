@@ -44,15 +44,15 @@ Organizations:
         OrdererEndpoints:
             - orderer.example.com:7050
 
-    - &buyer
+    - &manufacturer
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: buyerMSP
+        Name: manufacturerMSP
 
         # ID to load the MSP definition as
-        ID: buyerMSP
+        ID: manufacturerMSP
 
-        MSPDir: ../organizations/peerOrganizations/buyer.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/manufacturer.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -60,26 +60,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('buyerMSP.admin', 'buyerMSP.peer', 'buyerMSP.client')"
+                Rule: "OR('manufacturerMSP.admin', 'manufacturerMSP.peer', 'manufacturerMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('buyerMSP.admin', 'buyerMSP.client')"
+                Rule: "OR('manufacturerMSP.admin', 'manufacturerMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('buyerMSP.admin')"
+                Rule: "OR('manufacturerMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('buyerMSP.peer')"
+                Rule: "OR('manufacturerMSP.peer')"
 
-    - &seller
+    - &retailer
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: sellerMSP
+        Name: retailerMSP
 
         # ID to load the MSP definition as
-        ID: sellerMSP
+        ID: retailerMSP
 
-        MSPDir: ../organizations/peerOrganizations/seller.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/retailer.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -87,16 +87,16 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('sellerMSP.admin', 'sellerMSP.peer', 'sellerMSP.client')"
+                Rule: "OR('retailerMSP.admin', 'retailerMSP.peer', 'retailerMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('sellerMSP.admin', 'sellerMSP.client')"
+                Rule: "OR('retailerMSP.admin', 'retailerMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('sellerMSP.admin')"
+                Rule: "OR('retailerMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('sellerMSP.peer')"
+                Rule: "OR('retailerMSP.peer')"
 
 ################################################################################
 #
@@ -312,15 +312,15 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *buyer
-                    - *seller
+                    - *manufacturer
+                    - *retailer
     TwoOrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *buyer
-                - *seller
+                - *manufacturer
+                - *retailer
             Capabilities:
                 <<: *ApplicationCapabilities

@@ -12,8 +12,8 @@
 
 export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-export PEER0_buyer_CA=${PWD}/organizations/peerOrganizations/buyer.example.com/peers/peer0.buyer.example.com/tls/ca.crt
-export PEER0_seller_CA=${PWD}/organizations/peerOrganizations/seller.example.com/peers/peer0.seller.example.com/tls/ca.crt
+export PEER0_manufacturer_CA=${PWD}/organizations/peerOrganizations/manufacturer.example.com/peers/peer0.manufacturer.example.com/tls/ca.crt
+export PEER0_retailer_CA=${PWD}/organizations/peerOrganizations/retailer.example.com/peers/peer0.retailer.example.com/tls/ca.crt
 export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
 
 # Set environment variables for the peer org
@@ -26,14 +26,14 @@ setGlobals() {
   fi
   infoln "Using organization ${USING_ORG}"
   if [ $USING_ORG -eq 1 ]; then
-    export CORE_PEER_LOCALMSPID="buyerMSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_buyer_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/buyer.example.com/users/Admin@buyer.example.com/msp
+    export CORE_PEER_LOCALMSPID="manufacturerMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_manufacturer_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/manufacturer.example.com/users/Admin@manufacturer.example.com/msp
     export CORE_PEER_ADDRESS=localhost:7051
   elif [ $USING_ORG -eq 2 ]; then
-    export CORE_PEER_LOCALMSPID="sellerMSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_seller_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/seller.example.com/users/Admin@seller.example.com/msp
+    export CORE_PEER_LOCALMSPID="retailerMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_retailer_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/retailer.example.com/users/Admin@retailer.example.com/msp
     export CORE_PEER_ADDRESS=localhost:9051
 
   elif [ $USING_ORG -eq 3 ]; then
@@ -61,9 +61,9 @@ setGlobalsCLI() {
     USING_ORG="${OVERRIDE_ORG}"
   fi
   if [ $USING_ORG -eq 1 ]; then
-    export CORE_PEER_ADDRESS=peer0.buyer.example.com:7051
+    export CORE_PEER_ADDRESS=peer0.manufacturer.example.com:7051
   elif [ $USING_ORG -eq 2 ]; then
-    export CORE_PEER_ADDRESS=peer0.seller.example.com:9051
+    export CORE_PEER_ADDRESS=peer0.retailer.example.com:9051
   elif [ $USING_ORG -eq 3 ]; then
     export CORE_PEER_ADDRESS=peer0.org3.example.com:11051
   else
@@ -85,10 +85,10 @@ parsePeerConnectionParameters() {
     PEER_CONN_PARMS="$PEER_CONN_PARMS --peerAddresses $CORE_PEER_ADDRESS"
     ## Set path to TLS certificate
     if [ $1 -eq 1 ]; then
-    TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER0_buyer_CA")
+    TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER0_manufacturer_CA")
   elif [ $1 -eq 2 ]; then
   
-    TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER0_seller_CA")
+    TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER0_retailer_CA")
   fi
     PEER_CONN_PARMS="$PEER_CONN_PARMS $TLSINFO"
     # shift by one to get to the next organization
